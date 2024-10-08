@@ -1,12 +1,13 @@
+const locoScroll = new LocomotiveScroll({
+  el: document.querySelector("#main"),
+  smooth: true,
+});
+
 function locomotive() {
   gsap.registerPlugin(ScrollTrigger);
 
   // Using Locomotive Scroll from Locomotive https://github.com/locomotivemtl/locomotive-scroll
 
-  const locoScroll = new LocomotiveScroll({
-    el: document.querySelector("#main"),
-    smooth: true,
-  });
   // each time Locomotive Scroll updates, tell ScrollTrigger to update too (sync positioning)
   locoScroll.on("scroll", ScrollTrigger.update);
 
@@ -37,6 +38,7 @@ function locomotive() {
   // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
   ScrollTrigger.refresh();
 }
+
 function loadingAnimation() {
   var timeline = gsap.timeline();
   timeline.from(".line h1", {
@@ -45,30 +47,30 @@ function loadingAnimation() {
     stagger: 0.2,
   });
 
+  locoScroll.stop()
   timeline.from("#line1-part1", {
     opacity: 0,
     onStart: function () {
       let h5_timer = document.querySelector("#line1-part1 h5");
       let count = 0;
-
       setInterval(() => {
         if (count < 100) {
           h5_timer.innerHTML = count++;
         } else {
           h5_timer.innerHTML = count;
+          locoScroll.start()
         }
       }, 30);
     },
   });
-
   timeline.to(".line h2", {
     animationName: "anime",
     opacity: 1,
   });
   timeline.to("#loader", {
     opacity: 0,
-    duration: 0.4,
-    delay: 2.8,
+    duration: 0.5,
+    delay: 2,
   });
 
   timeline.from("#page1", {
@@ -99,6 +101,7 @@ function loadingAnimation() {
 }
 
 function mouse_animation() {
+  document.querySelector("body").style.cursor = "none";
   Shery.mouseFollower({
     skew: true,
     ease: "cubic-bezier(0.23, 1, 0.320, 1)",
@@ -158,7 +161,7 @@ function mouse_animation() {
 }
 
 function gooeyEffect() {
-  Shery.imageEffect(".image-div", {
+  Shery.imageEffect(".image-div1 ,.image-div2 , .image-div3 , .image-div4", {
     style: 5,
     gooey: true,
     config: {
@@ -222,21 +225,29 @@ function flagAnimation() {
   });
 }
 
-
-
-flagAnimation()
+flagAnimation();
 mouse_animation();
 locomotive();
 loadingAnimation();
 gooeyEffect();
 
-
-
 // gsap.from("#footer h1", {
-//   opacity:0,
-//   delay:3,
-//   duration:1,
-//   onStart:function(){
-//     $('#footer h1').textillate({ in: { effect: 'fadeIn' } });
+//   opacity: 0,
+//   delay: 3,
+//   duration: 1,
+//   onStart: function () {
+//     $("#footer h1").textillate({ in: { effect: "fadeIn" } });
+//   },
+// });
+
+// gsap.from(".underline", {
+//   opacity: 0,
+//   x: 1000,
+//   duration: 0.5,
+//   scrollTrigger: {
+//     trigger: "#page3",
+//     start: "top center", // Adjust as needed
+//     end: "bottom top", // Adjust as needed
+//     markers: true, // Enable markers
 //   }
-// })
+// });
